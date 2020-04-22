@@ -7,7 +7,6 @@ import sys
 from decompose_series import decompose_series
 from file_selector import file_selector
 from find_acf_pacf import find_acf_pacf
-from generate_code import generate_code
 from grid_search_arima import grid_search_arima
 from plot_forecast import plot_forecasts
 from predict_set import predict_set
