@@ -192,7 +192,7 @@ if train_model:
         confidence_interval.columns = ['ДИ нижний', 'ДИ верхний']
         plot_forecasts(forecasts, confidence_interval, data_frequency)
 
-    st.write('# Исходный код')
+    '''st.write('# Исходный код')
     st.markdown(generate_code(filename, ds_column, y, test_stationarity_code, test_set_size, 
                               seasonality, p, d, q, P, D, Q, s, exog_variables_names, transformation_function, 
-                              periods_to_forecast, data_frequency))
+                              periods_to_forecast, data_frequency))'''

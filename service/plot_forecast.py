@@ -46,6 +46,6 @@ def plot_forecasts(forecasts, confidence_interval, periods):
                     "yaxis": "y"                }
 
     plot_data = ([lower_ci, upper_ci, forecasting])
-    layout = go.Layout(title = 'прогноз на' f'{periods}')
+    layout = go.Layout(title = 'прогноз')
     fig = go.Figure(data = plot_data, layout=layout)
     st.plotly_chart(fig)
