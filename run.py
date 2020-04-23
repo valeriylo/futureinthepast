@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import sys
+import warnings
+warnings.filterwarnings("ignore")
 
 from decompose_series import decompose_series
 from file_selector import file_selector
