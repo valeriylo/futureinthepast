@@ -17,6 +17,9 @@ from transform_time_series import transform_time_series
 
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
+st.write('##:crystal_ball:')
+st.write('')
+st.write('')
 description =   '''
                 Web-сервис прогнозирования временных рядов с помощью авторегрессионных алгоритмов и алгоритмов
                 градиентного бустинга. Принимаются таблицы данных в популярных форматах .txt, .csv, .xlsx, .xls .
@@ -191,7 +194,3 @@ if train_model:
         confidence_interval.columns = ['ДИ нижний', 'ДИ верхний']
         plot_forecasts(forecasts, confidence_interval, data_frequency)
 
-    '''st.write('# Исходный код')
-    st.markdown(generate_code(filename, ds_column, y, test_stationarity_code, test_set_size, 
-                              seasonality, p, d, q, P, D, Q, s, exog_variables_names, transformation_function, 
-                              periods_to_forecast, data_frequency))'''
