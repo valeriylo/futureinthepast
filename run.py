@@ -17,7 +17,7 @@ from transform_time_series import transform_time_series
 
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
-st.write('##:crystal_ball:')
+st.write('## **:crystal_ball:**')
 st.write('')
 st.write('')
 description =   '''
