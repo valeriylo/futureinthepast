@@ -37,13 +37,13 @@ def sidebar_menus(menu_name, test_set_size=None, seasonality=None, terms=(0, 0, 
                                                             'Дневная', 'Ежемесячная', 'Квартальная', 'Годовая'], 0)
         
         # If the frequency do not select a frequency for the dataset, it will raise an error
-        #if data_frequency == 'Выберите периодичность':
+        if data_frequency == 'Выберите периодичность':
             # Hiding traceback in order to only show the error message
-         #   sys.tracebacklimit = 0
-          #  raise ValueError('Пожалуйста, выберите периодичность данных')
+            sys.tracebacklimit = 0
+            raise ValueError('Пожалуйста, выберите периодичность данных')
         
         # Show traceback error
-        #sys.tracebacklimit = None
+        sys.tracebacklimit = None
 
         st.sidebar.markdown('### Выбор переменных')
         ds_column = st.sidebar.selectbox('Выберите столбец со временем', df.columns, 0)
@@ -67,7 +67,7 @@ def sidebar_menus(menu_name, test_set_size=None, seasonality=None, terms=(0, 0, 
         Q = st.sidebar.slider('Q (Сезонное MA)', 0, 30, min([terms[5], 30]))
         s = st.sidebar.slider('s (Сезонная периодичность)', 0, 30, min([terms[6], 30]))
         
-        st.sidebar.markdown('# Период прогноза')
+        st.sidebar.markdown('## Период прогноза')
         periods_to_forecast = st.sidebar.slider('На какой срок нужен прогноз?', 1, int(len(df.iloc[:-test_set_size])/3), int(seasonality/2))
         
         grid_search = st.sidebar.checkbox('Подобрать наилучшие параметры')

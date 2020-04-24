@@ -38,7 +38,7 @@ if uploaded_file is not None:
 else:
     filename, df = file_selector()
 
-st.markdown('## **Предварительные просмотр таблицы данных**')
+st.header('Предварительный просмотр таблицы данных')
 st.dataframe(df.head(10))
 
 ds_column, y, data_frequency, test_set_size, exog_variables = sidebar_menus('feature_target', df=df)
@@ -76,18 +76,18 @@ df = transform_time_series(df, ds_column, data_frequency, y)
 
 # Show the historical plot?
 if show_absolute_plot:
-    st.markdown('# Временной ряд ')
+    st.header('Временной ряд')
     df[y].plot(color='green')
     plt.title('Исходный временной ряд')
     st.pyplot()
 
 # Show decomposition plot
 if show_seasonal_decompose:
-    st.markdown('# Сезонная декомпозиция')
+    st.header('Сезонная декомпозиция')
     decompose_series(df)
 
 # Checking for stationarity in the series
-st.title('Проверка ряда на стационарность')
+st.header('Проверка ряда на стационарность')
 
 # If a function is not forced by the user, use the default pipeline
 if force_transformation == None:
@@ -97,11 +97,11 @@ else:
                                                                                                             force_transformation_technique = force_transformation, 
                                                                                                             custom_transformation_size = (difference_size, seasonal_difference_size))
 
-st.title('Функции автокорреляции и частичной автокорреляции (ACF/PACF)')
+st.header('Функции автокорреляции и частичной автокорреляции (ACF/PACF)')
 p, q, P, Q = find_acf_pacf(acf_pacf_data, seasonality)
-st.markdown('**Начальное приближение по ACF/PACF**: {}x{}{}'.format((p, d, q), (P, D, Q), (seasonality)))
+st.markdown('*Начальное приближение по ACF/PACF: {}x{}{}*'.format((p, d, q), (P, D, Q), (seasonality)))
 
-st.title('Обучить модель')
+st.header('Обучить модель')
 st.write('Выберите подходящие параметры в меню слева и нажмите на кнопку')
 
 try:
