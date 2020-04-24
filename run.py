@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import streamlit as st
-import sys
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -19,13 +18,10 @@ from transform_time_series import transform_time_series
 
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
-st.write('## **:crystal_ball:**')
-st.write('')
-st.write('')
 description =   '''
-                Web-сервис прогнозирования временных рядов с помощью авторегрессионных алгоритмов и алгоритмов
+                :crystal_ball: Web-сервис прогнозирования временных рядов с помощью авторегрессионных алгоритмов и алгоритмов
                 градиентного бустинга. Принимаются таблицы данных в популярных форматах .txt, .csv, .xlsx, .xls .
-                При необходимости возможна самостоятельная настройка параметров.
+                При необходимости возможна самостоятельная настройка параметров
                 '''
 # Description
 st.write('> “Forecasting is the art of saying what will happen, and then explaining why it did\'t!”')
@@ -191,7 +187,7 @@ if train_model:
         else:
             forecasts = final_model.forecast(periods_to_forecast)
             confidence_interval = final_model.get_forecast(periods_to_forecast).conf_int()
-            st.write(confidence_interval)
+            #st.write(confidence_interval)
 
         confidence_interval.columns = ['ДИ нижний', 'ДИ верхний']
         plot_forecasts(forecasts, confidence_interval, data_frequency)
