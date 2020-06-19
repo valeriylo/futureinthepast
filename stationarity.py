@@ -1,36 +1,13 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
-from transformation_function import timeSeriesTransformer
+from transform_f import timeSeriesTransformer
 
-def test_stationary(timeseries, plot_results=False, data_frequency=None, force_transformation_technique=None, custom_transformation_size=None):
+def stationarity(timeseries, plot_results=False, data_frequency=None, force_transformation_technique=None,
+                 custom_transformation_size=None):
     '''
-    Augmented Dickey-Fuller Test in order to check if we have a stationary series
-    This function will perform different transformations (log transformation, difference, seasonal difference, etc.),
-    and then will apply the ADF Test. At the end of this process, this function will return (along with other things)
-    the best transformed data based on the lowest significant statistical test.
-    Args:
-        timeseries (Pandas Series): a timeseries to be used for the statistical tests and transformations
-        plot_results (bool): Wether or not to plot the best time series transformation
-        data_frequency (str, optional): the frequency that the data was collected (daily, monthly, yearly, etc.)
-        force_transformation_technique (str, optional): the name of a transformation technique to force. This argument 
-            is passed by choosing one item from the sidebar
-        custom_transformation_size (tuple of integers, optional): if a custom difference technique is selecting, we inform the amount of differences to take
-            with this argument. Pass one value for difference and another for seasonal difference
-        force_transformation_technique (str): a transformation technique name to be forced on this function
-        custom_transformation_size (tuple of integers): a 2-sized tuple containing a integer for the differencing terms, 
-            and one for seasonal differencing terms
-    
-    Return:
-        original_timeseries (Pandas Series): the original time series passed to the function 
-        d (int): suggested value to be used for d (i) terms 
-        D (int): suggested value to be used for D (seasonal difference) terms 
-        seasonality (int): the seasonal frequency that occurs in the time series. It's based on the data_frequency parameter
-        timeseries (Pandas Series): a transformed time series based on the best stationarity transformation (differencing, log, etc.)
-        transformation_function (function): the function that was used to transform the time series to be stationary. 
-        It can be a lambda function or a Numpy Log function (np.log1p)
+   Функция, проверяющая на стационарность с помощью теста Дики-Фуллера
     '''
-
 
     transformer = timeSeriesTransformer(timeseries, data_frequency)
     best_transformation = transformer.test_absolute_data()
@@ -50,13 +27,10 @@ def test_stationary(timeseries, plot_results=False, data_frequency=None, force_t
         if force_transformation_technique == 'Логарифмическое + Сезонное':
             best_transformation = transformer.test_seasonal_log_difference()
         if force_transformation_technique == 'Пользовательские параметры':
-            # If a null value is passed by custom_transformation_size argument, raise an error
             if custom_transformation_size == None:
                 raise ValueError('Нельзя задать пустое значение для количества дифференцирования')
-            # Executing test for custom difference
             best_transformation = transformer.test_custom_difference(custom_transformation_size)
 
-        # If the test is not statistically significant, raise a Warning
             if best_transformation[2] is None:
                 warn_message = '''
                             Транформация статистически незначима. 
@@ -66,7 +40,6 @@ def test_stationary(timeseries, plot_results=False, data_frequency=None, force_t
         progress_bar.progress(100)
     
     else:
-        # Iterating over different stationarity transformations
         absolute_test = transformer.test_absolute_data()
         progress_bar.progress(20)
         first_difference_test = transformer.test_first_difference()
@@ -79,24 +52,19 @@ def test_stationary(timeseries, plot_results=False, data_frequency=None, force_t
         progress_bar.progress(100)
         seasonal_log_difference_test = transformer.test_seasonal_log_difference()
 
-        # Generating a list with all transformations
         transformations = [absolute_test, first_difference_test, log_difference_test, 
                         log_transformation_test, seasonal_difference_test, seasonal_log_difference_test]
 
-        # Best transformation so far. We start with the absolute and non-transformed data
         best_transformation = absolute_test
 
-        # Iteranting over each transformation
         for transformation in transformations:
             if transformation[0] < best_transformation[0] and transformation[2] != None:
                 best_transformation = transformation
 
-    # Checking rolling statistics
     mean = best_transformation[1].rolling(window=best_transformation[7]).mean()
     std = best_transformation[1].rolling(window=best_transformation[7]).std()
     
     if plot_results:
-        # Plotting rolling statistics
         fig = plt.figure(figsize=(10, 5))
         orig = plt.plot(best_transformation[1], color='green', label='Исходные данные')
         mean = plt.plot(mean, color='red', label='Среднее')
@@ -105,15 +73,16 @@ def test_stationary(timeseries, plot_results=False, data_frequency=None, force_t
         plt.title('Скользящее среднее и Стандартное отклонение')
         st.pyplot()
 
-    # Performing Dickey-Fuller test
     st.write('тест Дики-Фуллера')
     stat_test_value = best_transformation[0][0]
     critical_value_1_perc = best_transformation[0][4]['1%']
 
-    dfoutput = pd.Series(best_transformation[0][0:4], index=['Статистический тест', 'p-значение', 'Число лагов', 'Число наблюдений'])
+    dfoutput = pd.Series(best_transformation[0][0:4], index=['Статистический тест', 'p-значение', 'Число лагов',
+                                                             'Число наблюдений'])
     for key, value in best_transformation[0][4].items():
         dfoutput['Критическое значение {}'.format(key)] = value
     st.write(dfoutput)
 
-    return timeseries, best_transformation[3], best_transformation[4], best_transformation[7], best_transformation[1], best_transformation[5], best_transformation[6]
+    return timeseries, best_transformation[3], best_transformation[4], best_transformation[7], best_transformation[1], \
+           best_transformation[5], best_transformation[6]
 

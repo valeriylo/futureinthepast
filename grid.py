@@ -2,14 +2,26 @@ import numpy as np
 import statsmodels.api as sm
 import streamlit as st
 
-def grid_search_arima(train_data, exog,  p_range, q_range, P_range, Q_range, d=1, D=1, s=12):
-
+def grid(train_data, exog,  p_range, q_range, P_range, Q_range, d=1, D=1, s=12):
+    '''
+    Функция производит поиск наилучших параметров по сетке
+    '''
+    waiting_messages = ['Повторим законы робототехники: Первый закон: Робот не может...',
+                        'На Саракш и обратно!',
+                        'Ищем пропавшую звуковую отвертку...'
+                        'Детям требуется куда больше времени!',
+                        'Обжарить с каждой стороны по 2 минуты',
+                        'Zzzzzzzzz...',
+                        'Делу время, обучению видеокарта.',
+                        'Запускаем машину времени...',
+                        'Складываем, умножаем и логарифмируем...',
+                        'It`s bigger on the inside!']
     best_model_aic = np.Inf 
     best_model_bic = np.Inf 
     best_model_hqic = np.Inf
     best_model_order = (0, 0, 0)
     models = []
-    with st.spinner('Поиск наилучших параметров. Ожидайте...'):
+    with st.spinner(np.random.choice(waiting_messages)):
         for p_ in p_range:
             for q_ in q_range:
                 for P_ in P_range:

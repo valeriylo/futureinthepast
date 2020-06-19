@@ -1,15 +1,9 @@
 import streamlit as st
 import sys
 
-def sidebar_menus(menu_name, test_set_size=None, seasonality=None, terms=(0, 0, 0, 0, 0, 0, 0), df=None):
+def sidebarmenu(menu_name, test_set_size=None, seasonality=None, terms=(0, 0, 0, 0, 0, 0, 0), df=None):
     '''
-    Generates the sidebar menus for Streamlit. Based on menu_name parameter, it returns different menus for each situation.
-    Args.
-        menu_name (str): a menu name that will be shown on the sidebar. It can be: absolute, seasonal, adfuller, train_predictions,
-        test_predictions, feature_target, or terms
-        seasonality (str, optional): a value to be replaced by a number. e.g.: if Hourly, this function will consider 24 for seasonality
-        terms (7-value tuple): tuple with 7 integer values for p, d, q, P, D, Q, and s
-        df (Pandas DataFrame, optional): a Pandas DataFrame containing some time series data to extract the columns
+    Функция создает боковую панель с необходимыми параметрами для настройки
     '''
     seasonality_dict = {'Часовая': 24,
                         'Дневная': 7,
@@ -53,7 +47,9 @@ def sidebar_menus(menu_name, test_set_size=None, seasonality=None, terms=(0, 0, 
         return ds_column, y, data_frequency, test_set_size, exog_variables
     elif menu_name == 'Принудительная трансформация':
         st.sidebar.markdown('### Принудительная трасформация данных (опционально)')
-        transformation_techniques_list = ['Выбрать оптимальную', 'Без трансформации', 'Первое дифференцирование', 'Логарифмическое', 'Сезонное', 'Первое логарифмическое', 'Логарифмическое + Сезонное', 'Пользовательские параметры']
+        transformation_techniques_list = ['Выбрать оптимальную', 'Без трансформации', 'Первое дифференцирование',
+                                          'Логарифмическое', 'Сезонное', 'Первое логарифмическое',
+                                          'Логарифмическое + Сезонное', 'Пользовательские параметры']
         transformation_techniques = st.sidebar.selectbox('Метод трансформации', transformation_techniques_list, 0)
         return transformation_techniques
     elif menu_name == 'terms':
@@ -68,7 +64,8 @@ def sidebar_menus(menu_name, test_set_size=None, seasonality=None, terms=(0, 0, 
         s = st.sidebar.slider('s (Сезонная периодичность)', 0, 30, min([terms[6], 30]))
         
         st.sidebar.markdown('## Период прогноза')
-        periods_to_forecast = st.sidebar.slider('На какой срок нужен прогноз?', 1, int(len(df.iloc[:-test_set_size])/3), int(seasonality/2))
+        periods_to_forecast = st.sidebar.slider('На какой срок нужен прогноз?', 1, int(len(df.iloc[:-test_set_size])/3),
+                                                int(seasonality/2))
         
         grid_search = st.sidebar.checkbox('Подобрать наилучшие параметры')
         train_model = st.sidebar.button('Выполнить')

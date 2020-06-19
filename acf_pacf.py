@@ -3,7 +3,10 @@ import numpy as np
 import statsmodels.api as sm
 import streamlit as st
 
-def find_acf_pacf(timeseries, seasonality):
+def acf_pacf(timeseries, seasonality):
+    '''
+    Функция нахождения параметров начального приближения для AR
+    '''
 
     ax1 = plt.subplot(211)
     ax2 = plt.subplot(212)
@@ -19,7 +22,6 @@ def find_acf_pacf(timeseries, seasonality):
     pacf_values = sm.tsa.stattools.pacf(timeseries.dropna(), nlags = seasonality * 2, method='ywunbiased')
 
     acf_values = sm.tsa.stattools.acf(timeseries.dropna(), nlags = seasonality * 2, fft=False, unbiased=False)
-
 
     for value in pacf_values[1:]:
         if value >= upper_conf_int or value <= lower_conf_int:

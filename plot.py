@@ -1,9 +1,10 @@
 import plotly.graph_objs as go
 import streamlit as st
 
-def plot_forecasts(forecasts, confidence_interval, periods):
-
-
+def plot(forecasts, confidence_interval, periods):
+    '''
+    Функция строит график прогноза модели
+    '''
     lower_ci = {"x": confidence_interval.index, 
                 "y": confidence_interval['ДИ нижний'],
                 "line": {

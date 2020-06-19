@@ -4,11 +4,14 @@ import pandas as pd
 import streamlit as st
 
 from math import sqrt
-from mean_abs_pct_error import mean_abs_pct_error
+from m_error import m_error
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
-def predict_set(timeseries, y, seasonality, transformation_function, model, exog_variables=None,forecast=False, show_train_prediction=None, show_test_prediction=None):
-
+def predict(timeseries, y, seasonality, transformation_function, model, exog_variables=None,forecast=False,
+            show_train_prediction=None, show_test_prediction=None):
+    '''
+    Построение прогноза вне выборки по выбранной модели
+    '''
     timeseries = timeseries.to_frame()
     timeseries[y] = transformation_function(timeseries[y])
 
@@ -37,8 +40,9 @@ def predict_set(timeseries, y, seasonality, transformation_function, model, exog
         aic = model.aic
         bic = model.bic
         hqic = model.hqic
-        mape = np.round(mean_abs_pct_error(timeseries[y].iloc[-(seasonality*3):], timeseries['ŷ'].iloc[-(seasonality*3):]), 2)
-        mae = np.round(mean_absolute_error(timeseries[y].iloc[-(seasonality*3):], timeseries['ŷ'].iloc[-(seasonality*3):]), 2)
+        mape = np.round(m_error(timeseries[y].iloc[-(seasonality*3):], timeseries['ŷ'].iloc[-(seasonality*3):]), 2)
+        mae = np.round(mean_absolute_error(timeseries[y].iloc[-(seasonality*3):],
+                                           timeseries['ŷ'].iloc[-(seasonality*3):]), 2)
     except ValueError:
         error_message = '''
                         Возникли проблемы с расчетом метрик модели.
@@ -47,6 +51,8 @@ def predict_set(timeseries, y, seasonality, transformation_function, model, exog
                         '''
         raise ValueError(error_message)
     
-    metrics_df = pd.DataFrame(data=[rmse, aic, bic, hqic, mape, mae], columns = ['{} SET METRICS'.format('TEST' if forecast else 'TRAIN')], index = ['RMSE', 'AIC', 'BIC', 'HQIC', 'MAPE', 'MAE'])
+    metrics_df = pd.DataFrame(data=[rmse, aic, bic, hqic, mape, mae], columns = ['{} SET METRICS'
+                              .format('TEST' if forecast else 'TRAIN')], index = ['RMSE', 'AIC', 'BIC', 'HQIC',
+                                                                                  'MAPE', 'MAE'])
     st.markdown('### **Метрики**')
     st.dataframe(metrics_df)

@@ -2,33 +2,20 @@ import numpy as np
 import statsmodels.api as sm
 import streamlit as st
 
-def train_ts_model(Y, p, d, q, P, D, Q, s, exog_variables=None, quiet=False):
+def train(Y, p, d, q, P, D, Q, s, exog_variables=None, quiet=False):
     '''
-    A function to train a time series model using a SARIMAX estimator
-    Args.
-        Y (Pandas Series): a time series data to model. It must be a Pandas Series, where the index is the time series frequency and the values are
-            the observations that will be model.
-        p (int): amount of AR terms
-        d (int): amount of differencing terms
-        q (int): amount of MA terms
-        P (int): amount of Autoregressive terms for seasonality
-        D (int): amount of seasonal differencing terms
-        Q (int): amount of Moving Average terms for seasonality
-        s (int): seasonality frequency
-        exog_variables (Pandas Series): exogenous variables to be used on the model
-        quiet (bool), default False: if True, this function will just train the model, without showing the summary information
-    Return:
-        results (Statsmodel fitted model): a fitted model based on the parameters 
+    Функция для обучения модели с помощью SARIMAX
     '''
-    waiting_messages = ['Повторим законы робототехники: Первый закон гласит ...',
-                        'Обучаем модель...',
-                        'Детям требуется куда больше времени!.',
+    waiting_messages = ['Повторим законы робототехники: Первый закон: Робот не может...',
+                        'На Саракш и обратно!',
+                        'Ищем пропавшую звуковую отвертку...'
+                        'Детям требуется куда больше времени!',
                         'Обжарить с каждой стороны по 2 минуты',
                         'Zzzzzzzzz...',
                         'Делу время, обучению видеокарта.',
                         'Запускаем машину времени...',
                         'Складываем, умножаем и логарифмируем...',
-                        'Ожидайте...']
+                        'It`s bigger on the inside!']
 
     mod = sm.tsa.statespace.SARIMAX(Y,
                                     order = (p, d, q),

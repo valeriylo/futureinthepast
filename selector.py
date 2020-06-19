@@ -2,11 +2,14 @@ import os
 import pandas as pd
 import streamlit as st
 
-def file_selector(folder_path='datasets/'):
-
+def selector(folder_path='datasets/'):
+    '''
+    Функция выбора файла пользователя и начальной проверки данных
+    '''
     filenames = os.listdir(folder_path)
     filenames.sort()
-    default_file_index = filenames.index('monthly_air_passengers.csv') if 'monthly_air_passengers.csv' in filenames else 0
+    default_file_index = filenames.index('monthly_air_passengers.csv') if 'monthly_air_passengers.csv' in filenames \
+        else 0
     selected_filename = st.sidebar.selectbox('Выберите файл', filenames, default_file_index)
 
     if str.lower(selected_filename.split('.')[-1]) in ['csv', 'txt']:

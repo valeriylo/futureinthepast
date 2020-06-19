@@ -3,8 +3,10 @@ import streamlit as st
 
 from statsmodels.tsa.seasonal import seasonal_decompose
 
-def decompose_series(ts):
-
+def decompose_ts(ts):
+    '''
+    Функция производит декомпозицию временного ряда
+    '''
     ax1 = plt.subplot(311)
     ax2 = plt.subplot(312)
     ax3 = plt.subplot(313)
@@ -14,8 +16,8 @@ def decompose_series(ts):
 
     except AttributeError:
         error_message = '''
-                        Похоже стобец Дата в некорректном формате. Убедитесь, что он соответствует формату функции Pandas
-                        to_datetime.
+                        Похоже стобец "Дата" в некорректном формате. Убедитесь, что он соответствует формату функции
+                        Pandas to_datetime.
                         '''
         raise AttributeError(error_message)
 
