@@ -21,11 +21,11 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 st.image('img/8.png')
 st.write('> *«Скажите, что произойдет в будущем, и мы будем знать, что вы боги»  \n(Ис 41:23)*')
 st.markdown('**Cервис для автоматизированного прогноза временных рядов. Файлы с данными  \nзагружаются в форматах'
-            ' *.csv .txt .xls .xlsx *. Необходимые настройки указыватся в боковом меню слева.**')
+            ' *.csv .txt .xls .xlsx *. Необходимые настройки указываются в боковом меню слева.**')
 
 st.sidebar.title('Конфигурация данных')
 
-uploaded_file = st.sidebar.file_uploader("Загрузите файл в подходящем фомате ",type="csv")
+uploaded_file = st.sidebar.file_uploader("Загрузите файл в подходящем формате ",type="csv")
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     filename = uploaded_file
