@@ -155,7 +155,18 @@ if train_model:
 
     st.markdown('# Прогноз вне выборки')
 
-    with st.spinner('Обучение модели на всей выборке. Ожидайте...'):
+    waiting_messages = ['Повторим законы робототехники. Первый закон: Робот не может...',
+                        'На Саракш и обратно!',
+                        'Ищем пропавшую звуковую отвертку...'
+                        'Детям требуется куда больше времени!',
+                        'Обжарить с каждой стороны по 2 минуты',
+                        'Zzzzzzzzz...',
+                        'Делу время, обучению видеокарта.',
+                        'Запускаем машину времени...',
+                        'Складываем, умножаем и логарифмируем...',
+                        'It`s bigger on the inside!']
+
+    with st.spinner(np.random.choice(waiting_messages)):
         final_model = train(transformation_function(ts), p, d, q, P, D, Q, s, exog_variables=exog_variables, quiet=True)
     st.success('Выполнено!')
     
