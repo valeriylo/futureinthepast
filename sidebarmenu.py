@@ -55,19 +55,20 @@ def sidebarmenu(menu_name, test_set_size=None, seasonality=None, terms=(0, 0, 0,
     elif menu_name == 'terms':
         st.sidebar.markdown('### Параметры модели')
         st.sidebar.text('Значения для (p, d, q)x(P, D, Q)s')
-        p = st.sidebar.slider('p (AR)', 0, 30, min([terms[0], 30]))
-        d = st.sidebar.slider('d (I)', 0, 3, min([terms[1], 3]))
-        q = st.sidebar.slider('q (MA)', 0, 30, min([terms[2], 30]))
-        P = st.sidebar.slider('P (Сезонная AR)', 0, 30, min([terms[3], 30]))
-        D = st.sidebar.slider('D (Сезонное дифференцирование)', 0, 3, min([terms[4], 3]))
-        Q = st.sidebar.slider('Q (Сезонное MA)', 0, 30, min([terms[5], 30]))
-        s = st.sidebar.slider('s (Сезонная периодичность)', 0, 30, min([terms[6], 30]))
+        p = st.sidebar.slider('p-предыдущих значений времени АР', 0, 30, min([terms[0], 30]))
+        d = st.sidebar.slider('d - порядок разности', 0, 3, min([terms[1], 3]))
+        q = st.sidebar.slider('q-предыдущих значений времени СС', 0, 30, min([terms[2], 30]))
+        P = st.sidebar.slider('P - (Сезонная АР)', 0, 30, min([terms[3], 30]))
+        D = st.sidebar.slider('D - (Сезонное дифференцирование)', 0, 3, min([terms[4], 3]))
+        Q = st.sidebar.slider('Q - (Сезонное СС)', 0, 30, min([terms[5], 30]))
+        s = st.sidebar.slider('s - (Сезонная периодичность)', 0, 30, min([terms[6], 30]))
         
         st.sidebar.markdown('## Период прогноза')
         periods_to_forecast = st.sidebar.slider('На какой срок нужен прогноз?', 1, int(len(df.iloc[:-test_set_size])/3),
                                                 int(seasonality/2))
         
         grid_search = st.sidebar.checkbox('Подобрать наилучшие параметры')
+        xgboost = st.sidebar.checkbox('Применить алгоритм XGBoost')
         train_model = st.sidebar.button('Выполнить')
 
         return p, d, q, P, D, Q, s, train_model, periods_to_forecast, grid_search
